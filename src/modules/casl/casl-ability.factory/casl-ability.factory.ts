@@ -4,6 +4,7 @@ import { Subjects } from "./types";
 import { User } from "src/modules/users/user.schema";
 import { UserRoles } from "src/common/enums/roles.enum";
 import { Product } from "src/modules/product/product.schema";
+import { RequestUser } from "src/common/types/requestUser.type";
 
 type PossibleAbilities = [Actions, Subjects];
 type Conditions = MongoQuery;
@@ -12,7 +13,7 @@ export type AppAbility = MongoAbility<PossibleAbilities, Conditions>;
 
 export class CaslAbilityFactory {
 
-    createForUser(user : any){
+    createForUser(user : RequestUser){
         const { can, cannot, build } = new AbilityBuilder(createMongoAbility<PossibleAbilities, Conditions>);
         if(!user){
             can(Actions.Read, Product);

@@ -28,7 +28,7 @@ export class CreateUserDTO {
 
     @IsNotEmpty()
     @IsString()
-    adress : string;
+    address : string;
 
     @IsNotEmpty()
     @IsString()

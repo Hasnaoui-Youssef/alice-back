@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException, Search } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './user.schema';
-import { Model, RootFilterQuery } from 'mongoose';
+import { Model, RootFilterQuery, UpdateQuery } from 'mongoose';
 import { CreateUserDTO } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt'
 import { UserQueryDTO } from './dto/user-query.dto';
@@ -122,5 +122,13 @@ export class UsersService {
     }
     async countDocs(query : RootFilterQuery<User>) : Promise<number> {
         return await this.userModel.countDocuments(query);
+    }
+    async updateUser(query : RootFilterQuery<User>, data : UpdateQuery<User> ) : Promise<User> {
+        try{
+            const user = await this.userModel.findOneAndUpdate(query, data);
+            return user;
+        }catch(error){
+            throw new BadRequestException("Error Updating User")
+        }
     }
 }

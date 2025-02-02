@@ -1,11 +1,15 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document, HydratedDocument } from "mongoose";
+import { HydratedDocument, SchemaTypes, Types } from "mongoose";
 import { UserRoles } from "../../common/enums/roles.enum";
 
 export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User{
+
+    @Prop({ type : SchemaTypes.ObjectId, auto : true})
+    _id : Types.ObjectId;
+
     @Prop({ required : true })
     username : string;
 
@@ -25,13 +29,19 @@ export class User{
     phoneNumber : string;
 
     @Prop({ required : true })
-    adress : string;
+    address : string;
 
     @Prop({ required : true })
     birthDate : Date;
 
     @Prop({ required : true, enum: Object.values(UserRoles)})
     role : UserRoles;
+
+    @Prop({ type : [Types.ObjectId], default : [], ref:"Order" })
+    orders : Types.ObjectId[];
+
+    @Prop()
+    jit? : string;
     /*
     *** TODO : add these fields for further protection
     @Prop({ required : true })
