@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException, Search } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './user.schema';
-import { Model, RootFilterQuery, UpdateQuery } from 'mongoose';
+import { Model, RootFilterQuery, Types, UpdateQuery } from 'mongoose';
 import { CreateUserDTO } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt'
 import { UserQueryDTO } from './dto/user-query.dto';
@@ -16,7 +16,7 @@ export class UsersService {
 
     async createUser(createUserDTO : CreateUserDTO) : Promise<User> {
         const existingUser = await this.userModel.findOne({
-            $or : [{username : createUserDTO.username}, {email : createUserDTO.email}]
+            email : createUserDTO.email
         });
         if(existingUser){
             throw new BadRequestException("User with this username or email already exists");
@@ -25,7 +25,7 @@ export class UsersService {
         const hashedPassword = await bcrypt.hash(createUserDTO.password, salt);
         createUserDTO.password = hashedPassword;
         const newUser = new this.userModel(createUserDTO);
-        return newUser.save();
+        return await newUser.save();
     }
 
 
@@ -103,17 +103,17 @@ export class UsersService {
             totalPages
         }
     }
-    async findOneByUserName(username : string) : Promise<User> {
+    async findOneByEmail(email : string) : Promise<User> {
         try {
-            const user = await this.userModel.findOne({ username }).exec();
+            const user = await this.userModel.findOne({ email }).exec();
             return user.toObject();
         }catch(error){
-            throw new NotFoundException(`User ${username} not found, ${error.message}`);
+            throw new NotFoundException(`User ${email} not found, ${error.message}`);
         }
     }
     async findOneById(id : string) : Promise<User> {
         try {
-            const user = await this.userModel.findById(id).exec();
+            const user = await this.userModel.findById(new Types.ObjectId(id)).exec();
             return user as User;
         }catch(error){
             throw new NotFoundException(`User ${id} not found, ${error.message}`);

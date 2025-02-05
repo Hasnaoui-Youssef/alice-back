@@ -1,12 +1,6 @@
-import { Type } from "class-transformer";
-import { IsDate, IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateUserDTO {
-    @IsNotEmpty()
-    @IsString()
-    username : string;
-
-    @IsNotEmpty()
     @IsString()
     password : string;
 
@@ -21,22 +15,5 @@ export class CreateUserDTO {
     @IsNotEmpty()
     @IsString()
     email : string;
-
-    @IsNotEmpty()
-    @IsString()
-    phoneNumber : string;
-
-    @IsNotEmpty()
-    @IsString()
-    address : string;
-
-    @IsNotEmpty()
-    @IsString()
-    profileAvatarUrl : string;
-
-    @IsNotEmpty()
-    @Type(() => Date)
-    @IsDate()
-    birthDate : Date;
 
 }

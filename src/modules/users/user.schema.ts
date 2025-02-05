@@ -11,9 +11,6 @@ export class User{
     _id : Types.ObjectId;
 
     @Prop({ required : true })
-    username : string;
-
-    @Prop({ required : true })
     password : string;
 
     @Prop({ required : true })
@@ -25,23 +22,17 @@ export class User{
     @Prop({ required : true })
     email : string;
 
-    @Prop({ required : true })
-    phoneNumber : string;
-
-    @Prop({ required : true })
-    address : string;
-
-    @Prop({ required : true })
-    birthDate : Date;
-
-    @Prop({ required : true, enum: Object.values(UserRoles)})
+    @Prop({ required : true, enum: Object.values(UserRoles), default : UserRoles.Client})
     role : UserRoles;
 
     @Prop({ type : [Types.ObjectId], default : [], ref:"Order" })
     orders : Types.ObjectId[];
 
-    @Prop()
+    @Prop({ required : false})
     jit? : string;
+
+    @Prop({ required : true, default: false})
+    isActivated : boolean;
     /*
     *** TODO : add these fields for further protection
     @Prop({ required : true })

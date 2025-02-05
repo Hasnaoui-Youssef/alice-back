@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { Request } from "express";
-import { AuthService } from "./auth.service";
+import { AuthService } from "../auth.service";
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, "jwt-refresh") {
@@ -31,17 +31,6 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, "jwt-refresh"
   }
 
   async validate(req : Request, payload: any) {
-    try {
-      const user = await this.authService.verifyUserRefreshToken(req.cookies?.refresh_token, payload.sub );
-      return {
-        userId: user._id,
-        username: user.username,
-        role: user.role,
-        refreshToken : user.jit,
-      };
-    }catch(error){
-      throw new UnauthorizedException("Refresh token not valid");
-    }
-
+      return await this.authService.verifyUserRefreshToken(req.cookies?.refresh_token, payload.sub );
   }
 }

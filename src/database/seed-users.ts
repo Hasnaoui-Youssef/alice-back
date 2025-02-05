@@ -25,9 +25,7 @@ async function seedUsers(){
                 email: "admin@example.com",
                 firstName : "John",
                 lastName : "Doe",
-                phoneNumber : "95456456",
-                adress : "New York City",
-                birthDate : new Date(2002, 6, 3)
+                isActivated : true,
             },
             {
                 username: "client",
@@ -36,9 +34,7 @@ async function seedUsers(){
                 email: "client@example.com",
                 firstName : "Patrick",
                 lastName : "Hamilton",
-                phoneNumber : "55654879",
-                adress : "Jandouba",
-                birthDate : new Date(2001, 0, 29)
+                isActivated : true,
             },
         ] 
         await UserModel.insertMany(users);

@@ -1,5 +1,5 @@
 import { InferSubjects } from "@casl/ability";
-import { Product } from "src/modules/product/product.schema";
+import { Product } from "src/modules/product/schemas/product.schema";
 import { User } from "src/modules/users/user.schema";
 
 

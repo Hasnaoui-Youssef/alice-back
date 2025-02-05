@@ -27,7 +27,7 @@ export class PoliciesGuard implements CanActivate {
        const userCheckDoc = await this.userService.findOneById(params.id);
        const userCheck = new User();
        if(userCheckDoc){
-        userCheck.username = userCheckDoc.username;
+        userCheck._id = userCheckDoc._id;
        }
        const ability = this.caslAbilityFactory.createForUser(user);
        return policies.every((handler) => this.execPolicyHandler(handler, ability, userCheck));

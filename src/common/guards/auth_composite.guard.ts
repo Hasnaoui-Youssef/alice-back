@@ -9,6 +9,7 @@ import { JwtAuthGuard } from "./jwt-auth.guard";
 import { IS_PUBLIC_KEY } from "../decorators/public.decorator";
 import { RolesGuard } from "./roles.guard";
 import { PoliciesGuard } from "./check_policy.guard";
+import { AccountActivatedGuard } from "./account-activated.guard";
 
 @Injectable()
 export class AuthCompositeGuard implements CanActivate {
@@ -19,6 +20,7 @@ export class AuthCompositeGuard implements CanActivate {
     private readonly reflector: Reflector,
     private readonly roleGuard : RolesGuard,
     private readonly policyGuard : PoliciesGuard,
+    private readonly accountActivatedGuard : AccountActivatedGuard
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -35,7 +37,8 @@ export class AuthCompositeGuard implements CanActivate {
     const jwtValid =  await this.jwtAuthGuard.canActivate(context);
     const roleValid = this.roleGuard.canActivate(context);
     const policyValid = await this.policyGuard.canActivate(context);
-    if(!jwtValid || !roleValid || !policyValid){
+    const activationValid = this.accountActivatedGuard.canActivate(context);
+    if(!jwtValid || !roleValid || !policyValid || !activationValid){
       return false;
     }
     return true;

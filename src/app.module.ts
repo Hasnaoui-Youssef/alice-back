@@ -13,6 +13,10 @@ import { ProductModule } from './modules/product/product.module';
 import { OrderModule } from './modules/order/order.module';
 import { RolesGuard } from './common/guards/roles.guard';
 import { PoliciesGuard } from './common/guards/check_policy.guard';
+import { MailerModule } from './modules/mailer/mailer.module';
+import { ShoppingCartModule } from './modules/shopping-cart/shopping-cart.module';
+import { CategoryModule } from './modules/category/category.module';
+import { AccountActivatedGuard } from './common/guards/account-activated.guard';
 
 @Module({
   imports: [
@@ -24,7 +28,19 @@ import { PoliciesGuard } from './common/guards/check_policy.guard';
   UsersModule,
   CaslModule,
   ProductModule,
-  OrderModule
+  OrderModule,
+  MailerModule.forRoot({
+    transport : {
+      host : process.env.EMAIL_HOST,
+      port : Number(process.env.EMAIL_PORT),
+      auth : {
+        user : process.env.EMAIL_USERNAME,
+        pass : process.env.EMAIL_PASSWORD,
+      }
+    }
+  }),
+  ShoppingCartModule,
+  CategoryModule
 ],
   controllers: [AppController],
   providers: [
@@ -32,6 +48,7 @@ import { PoliciesGuard } from './common/guards/check_policy.guard';
     JwtAuthGuard,
     RolesGuard,
     PoliciesGuard,
+    AccountActivatedGuard,
     {
       provide : APP_GUARD,
       useClass : AuthCompositeGuard,
