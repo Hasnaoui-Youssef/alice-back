@@ -6,7 +6,7 @@ export type ProductDocument  = HydratedDocument<Product>
 @Schema({timestamps : true})
 export class Product {
 
-  @Prop({required : true})
+  @Prop({required : true, unique : true, index : true})
   name : string;
 
   @Prop({required : true, default : 0})
@@ -32,6 +32,21 @@ export class Product {
 
   @Prop({required : true, default: false})
   isActive : boolean;
+
+  @Prop({required : false})
+  proprieties? : string;
+
+  @Prop({required : false})
+  usageAdvice? : string;
+
+  @Prop({type : [String], required : false})
+  ingredients : string[];
+  
+  @Prop({required : false})
+  storageConditions? : string;
+
+  @Prop({required : false})
+  precautions? : string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
