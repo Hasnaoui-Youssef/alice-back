@@ -1,11 +1,15 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, Types } from "mongoose";
+import { HydratedDocument, SchemaTypes, Types } from "mongoose";
 import { CartItem } from "src/common/interfaces/cart-item.interface";
 
 export type ShoppingCartDocument = HydratedDocument<ShoppingCart>;
 
 @Schema()
 export class ShoppingCart{
+
+  @Prop({ type : SchemaTypes.ObjectId, auto : true})
+  _id : Types.ObjectId;
+
   @Prop({ type : Types.ObjectId, required : true, ref : "User"})
   clientId : Types.ObjectId;
 

@@ -3,9 +3,8 @@ import { ArrayMinSize, IsArray, IsEmpty, IsMongoId, IsNotEmpty, IsNumber, IsStri
 import { Types } from "mongoose";
 
 export class CreateShoppingCartDTO{
-  @IsMongoId()
-  @IsNotEmpty()
-  clientId : string | Types.ObjectId;
+  @IsEmpty()
+  clientId? :Types.ObjectId;
 
   @IsArray()
   @ArrayMinSize(1)

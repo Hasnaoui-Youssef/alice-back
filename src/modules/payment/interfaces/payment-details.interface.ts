@@ -2,57 +2,52 @@ export interface PaymentDetailsResponse {
   payment : PaymentDetails;
 }
 interface PaymentDetails {
-  id : string;
-  receiverWallet : RecieverWallet;
   transactions : TransactionDetails[];
-  amountDue : number;
-  reachedAmount : number;
+  failedTransactions : number;
+  successfulTransactions : number;
+  acceptedPaymentMethods : string[];
   amount : number;
   token : string;
+  orderId? : string;
+  type : string;
+  status : string;
   convertedAmount : number;
   exchangeRate : number;
-  expirationDate : string;
-  shortId : string;
-  link : string;
-  webhook : string;
-  successUrl : string;
-  failUrl : string;
-  orderId : string;
-  type : string;
-  status : string;
-  details : string;
-  acceptedPaymentMethods : string[];
-}
-interface RecieverWallet {
+  paymentDetails? : {
+    phoneNumber : string;
+    email : string;
+    name : string;
+  }
+  createdAt : string;
+  updatedAt : string;
   id : string;
-  owner : CompanyDetails;
-  participants : string[];
-  type : string;
-  name : string;
-  phoneNumber : string;
-}
-export interface CompanyDetails {
-  email : string;
-  name : string;
-  phoneNumber : string;
-  imageUrl : string;
-  owner : CompanyOwner;
-}
-export interface CompanyOwner {
-  email : string;
-  firstName : string;
-  lastName : string;
-  phoneNumber : string;
 }
 interface TransactionDetails {
-  _id :  string;
-  receiverWallet : RecieverWallet;
-  senderWallet : RecieverWallet;
+  type : string;
+  method : string;
+  status : string;
   token : string;
   amount : number;
-  type : string;
-  status : string;
-  payment : string;
-  method : string;
-  extSenderInfo : any;
+  ext_payment_ref : string;
+  from : string;
+  amountAfterFee : number
+  extSenderInfo : ExtraSenderInfo;
+  feeRate : number;
+  totalFee : number;
+  id :  string;
+}
+
+interface ExtraSenderInfo {
+  pan: string,
+  approvalCode: string,
+  expiration: string,
+  paymentSystem: string,
+  name: string,
+  regionType: string,
+  email: string,
+  bankInfo: {
+      bankName: string,
+      bankCountryCode: string,
+      bankCountryName: string
+  }
 }

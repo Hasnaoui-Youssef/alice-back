@@ -14,5 +14,6 @@ import { ClientReview, ClientReviewSchema } from './schemas/client-review.schema
   ],
   controllers: [ProductController],
   providers: [ProductService],
+  exports : [ProductService]
 })
 export class ProductModule {}

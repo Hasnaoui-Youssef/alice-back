@@ -57,7 +57,7 @@ export class ProductService {
       throw new BadRequestException("Unable to update product ", error.message);
     }
   }
-  async retrieveQuantity(productId : string, quantity : number){
+  async retrieveQuantity(productId : string, quantity : number) : Promise<Product> {
     try{
       const product = await this.productModel.findById(new Types.ObjectId(productId));
       if(product.quantity < quantity){

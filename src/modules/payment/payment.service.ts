@@ -7,6 +7,7 @@ import { catchError, firstValueFrom } from "rxjs";
 import { AxiosError } from "axios";
 import { PaymentDetailsResponse } from "./interfaces/payment-details.interface";
 import { ConfigService } from "@nestjs/config";
+import { PaymentOptions } from "./interfaces/payment-options.interface";
 
 @Injectable()
 export class PaymentService{
@@ -14,12 +15,14 @@ export class PaymentService{
   constructor(
     private readonly httpService : HttpService,
     @Inject(PAYMENT_OPTIONS) private readonly paymentOptions : PaymentOptions,
-    private readonly configService : ConfigService,
   ){}
-  public async initiatePayment(payload : PaymentPayload) : Promise<string> {
-    payload = {...payload, ...this.paymentOptions}
-    const url = this.configService.getOrThrow<string>("KONNECT_URL");
-    const { data } = await firstValueFrom(this.httpService.post<InitPaymentResponse>(url + "init-payment", payload).pipe(
+  public async initiatePayment(payload : PaymentPayload) : Promise<{
+    payUrl : string;
+    paymentRef : string;
+  }> {
+    const { konnectUrl, ...paymentData } = {...this.paymentOptions}
+    payload = {...payload, ...paymentData}
+    const { data } = await firstValueFrom(this.httpService.post<InitPaymentResponse>(konnectUrl+ "init-payment", payload).pipe(
       catchError((error : AxiosError) => {
         console.log(error)
         throw "unable to initialize payment"
@@ -27,7 +30,7 @@ export class PaymentService{
     ));
     console.log("Payment reference : ", data.paymentRef);
     console.log("Payment url : ", data.payUrl);
-    return data.payUrl;
+    return data;
   }
   public async getPaymentDetails(paymentRef : string) : Promise<PaymentDetailsResponse> {
     const { data } = await firstValueFrom(this.httpService.get<PaymentDetailsResponse>(paymentRef).pipe(

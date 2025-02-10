@@ -4,6 +4,7 @@ import { OrderStatus } from "src/common/enums/order-status.enum";
 import { PaymentMethod } from "src/common/enums/payment-methods.enum";
 import { CartItem } from "src/common/interfaces/cart-item.interface";
 import { ShippingDetails } from "src/common/interfaces/shipping-details.interface";
+import { PaymentDetailsResponse } from "../payment/interfaces/payment-details.interface";
 
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -47,6 +48,9 @@ export class Order{
 
   @Prop({required : true, enum : Object.values(OrderStatus), default : OrderStatus.InProcessing})
   status : OrderStatus;
+  // Nzidou payment ref w payment details, ykhaliwek tejem tchouf order details hata ll client
+  @Prop({required : false, unique : true})
+  onlinePaymentRef? : string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

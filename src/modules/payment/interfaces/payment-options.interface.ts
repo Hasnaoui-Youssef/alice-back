@@ -30,4 +30,5 @@ export interface PaymentOptions {
   options? : Options,
   receiverWalletId : string;
   apiKey : string;
+  konnectUrl : string
 }

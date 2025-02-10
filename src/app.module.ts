@@ -49,10 +49,13 @@ import { PaymentToken } from './modules/payment/interfaces/payment-options.inter
         options : {
           token : PaymentToken.TND,
           silentWebhook : true,
-          webhook : configService.get<string>("BACKEND_URL") + "order/payment-success",
+          webhook : configService.get<string>("BACKEND_URL") + "/order/payment-complete",
           addPaymentFeesToAmount : true,
+          successUrl : configService.get<string>("BACKEND_URL") + "/order/order-success",
+          failUrl : configService.get<string>("BACKEND_URL") + "/order/order-fail",
           theme : 'dark',
-        }
+        },
+        konnectUrl : configService.get<string>("KONNECT_URL"),
       }),
       inject:[ConfigService],
   }),

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShoppingCart } from './shopping-cart.schema';
 import { Model, Types } from 'mongoose';
@@ -10,17 +10,35 @@ export class ShoppingCartService {
     @InjectModel(ShoppingCart.name) private readonly shoppingCartModel : Model<ShoppingCart>,
   ){}
   
-  async createShoppingCart(shoppingCartDTO : CreateShoppingCartDTO){
+  async createShoppingCart(shoppingCartDTO : CreateShoppingCartDTO, userId : string){
     shoppingCartDTO.totalPrice = shoppingCartDTO.cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    shoppingCartDTO.clientId = new Types.ObjectId(shoppingCartDTO.clientId);
+    shoppingCartDTO.clientId = new Types.ObjectId(userId);
     shoppingCartDTO.cartItems.forEach((item) => {
       item.productId = new Types.ObjectId(item.productId);
     })
+    const check = await this.shoppingCartModel.findOne({clientId : shoppingCartDTO.clientId}).exec();
+    if(check){
+      throw new ForbiddenException("User already has cart")
+    }
     try{
       const shoppingCart = new this.shoppingCartModel(shoppingCartDTO);
       return await shoppingCart.save();
     }catch(error){
-      throw new BadRequestException("Unable to create shopping cart", error.message);
+      throw new BadRequestException("Unable to create shopping cart ", error.message);
+    }
+  }
+  async getCartById(scId : string) : Promise<ShoppingCart>{
+    try{
+      return await this.shoppingCartModel.findById(new Types.ObjectId(scId));
+    }catch(error){
+      throw new NotFoundException("Cart not found")
+    }
+  }
+  async getUserCart(userId : string) : Promise<ShoppingCart>{
+    try{
+      return await this.shoppingCartModel.findOne({clientId : new Types.ObjectId(userId)}).exec();
+    }catch(error){
+      throw new NotFoundException("Coulnd't find cart for user ")
     }
   }
   async addItem(scId : string, cartItemDto : CartItemDTO){
