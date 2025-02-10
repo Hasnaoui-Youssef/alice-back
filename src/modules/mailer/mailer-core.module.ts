@@ -58,8 +58,8 @@ export class MailerCoreModule {
         provide : MAILER_OPTIONS,
         useFactory : options.useFactory,
         inject : options.inject || [],
-      }
-    };
+      };
+    }
     return {
       name : MAILER_OPTIONS,
       provide : MAILER_OPTIONS,

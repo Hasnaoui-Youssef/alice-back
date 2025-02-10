@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthCompositeGuard } from './common/guards/auth_composite.guard';
@@ -17,6 +17,8 @@ import { MailerModule } from './modules/mailer/mailer.module';
 import { ShoppingCartModule } from './modules/shopping-cart/shopping-cart.module';
 import { CategoryModule } from './modules/category/category.module';
 import { AccountActivatedGuard } from './common/guards/account-activated.guard';
+import { PaymentModule } from './modules/payment/payment.module';
+import { PaymentToken } from './modules/payment/interfaces/payment-options.interface';
 
 @Module({
   imports: [
@@ -38,6 +40,21 @@ import { AccountActivatedGuard } from './common/guards/account-activated.guard';
         pass : process.env.EMAIL_PASSWORD,
       }
     }
+  }),
+  PaymentModule.forRootAsync({
+      imports : [ConfigModule],
+      useFactory : async (configService : ConfigService) => ({
+        receiverWalletId : configService.get<string>("KONNECT_WALLET_KEY"),
+        apiKey : configService.get<string>("KONNECT_API_KEY"),
+        options : {
+          token : PaymentToken.TND,
+          silentWebhook : true,
+          webhook : configService.get<string>("BACKEND_URL") + "order/payment-success",
+          addPaymentFeesToAmount : true,
+          theme : 'dark',
+        }
+      }),
+      inject:[ConfigService],
   }),
   ShoppingCartModule,
   CategoryModule

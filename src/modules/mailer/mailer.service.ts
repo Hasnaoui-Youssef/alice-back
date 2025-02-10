@@ -38,7 +38,7 @@ export class MailerService {
       throw new Error("Make sure to provide a transport configuration object, URL or transport plugin")
     }
   }
-  //TODO create verify add transporters
+  
   private createTransporter(config : string | smtpTrasnport | smtpTrasnport.Options, name? : string) : Transporter {
     const transporter = this.transportFactory.createTransport(config);
     if(this.mailerOptions.verifyTransporter){
