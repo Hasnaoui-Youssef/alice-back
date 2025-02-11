@@ -22,10 +22,14 @@ export class ShoppingCartService {
     }
     try{
       const shoppingCart = new this.shoppingCartModel(shoppingCartDTO);
+      shoppingCart.totalPrice = shoppingCart.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
       return await shoppingCart.save();
     }catch(error){
       throw new BadRequestException("Unable to create shopping cart ", error.message);
     }
+  }
+  async getAllCarts(){
+    return await this.shoppingCartModel.find();
   }
   async getCartById(scId : string) : Promise<ShoppingCart>{
     try{
@@ -41,9 +45,15 @@ export class ShoppingCartService {
       throw new NotFoundException("Coulnd't find cart for user ")
     }
   }
-  async addItem(scId : string, cartItemDto : CartItemDTO){
+  async addItem(userId : string, cartItemDto : CartItemDTO){
     try{
-     const shoppingCart = await this.shoppingCartModel.findById(new Types.ObjectId(scId));
+     const shoppingCart = await this.shoppingCartModel.findOne({clientId : new Types.ObjectId(userId)});
+     if(!shoppingCart){
+      const newShoppingCart = await this.createShoppingCart({
+        cartItems : [cartItemDto],
+      }, userId);
+      return newShoppingCart;
+     }
      cartItemDto.productId = new Types.ObjectId(cartItemDto.productId);
      const item = shoppingCart.cartItems.find((item) => item.productId === cartItemDto.productId)
      if(item){
@@ -67,9 +77,9 @@ export class ShoppingCartService {
     }
   }
 
-  async deleteCartItem(scId : string, itemProductId : string){
+  async deleteCartItem(userId : string, itemProductId : string){
     try{
-      const shoppingCart = await this.shoppingCartModel.findById(new Types.ObjectId(scId));
+      const shoppingCart = await this.shoppingCartModel.findOne({ clientId : new Types.ObjectId(userId)});
       shoppingCart.cartItems = shoppingCart.cartItems.filter((item)=> item.productId !== new Types.ObjectId(itemProductId));
       shoppingCart.totalPrice = shoppingCart.cartItems.reduce((acc, item)=> acc + (item.quantity * item.price), 0);
       return await shoppingCart.save();
@@ -77,9 +87,9 @@ export class ShoppingCartService {
       throw new BadRequestException("Unable to delete cart item ", error.message);
     }
   }
-  async addProductQuantity(scId : string, itemProductId : string, quantity : number){
+  async addProductQuantity(userId : string, itemProductId : string, quantity : number){
     try{
-      const shoppingCart = await this.shoppingCartModel.findById(new Types.ObjectId(scId));
+      const shoppingCart = await this.shoppingCartModel.findOne({ clientId : new Types.ObjectId(userId)});
       const item = shoppingCart.cartItems.find((item) => item.productId === new Types.ObjectId(itemProductId));
       item.quantity += quantity;
       shoppingCart.totalPrice += item.price * quantity; 
@@ -88,10 +98,13 @@ export class ShoppingCartService {
       throw new BadRequestException("Unable to add quantity to item ", error.message);
     }
   }
-  async reduceProductQuantity(scId : string, itemProductId : string, quantity : number){
+  async reduceProductQuantity(userId : string, itemProductId : string, quantity : number){
     try{
-      const shoppingCart = await this.shoppingCartModel.findById(new Types.ObjectId(scId));
+      const shoppingCart = await this.shoppingCartModel.findOne({ clientId : new Types.ObjectId(userId)});
       const item = shoppingCart.cartItems.find((item) => item.productId === new Types.ObjectId(itemProductId));
+      if(item.quantity <= quantity){
+        return await this.deleteCartItem(userId, itemProductId);
+      }
       item.quantity -= quantity;
       shoppingCart.totalPrice -= item.price * quantity; 
       return await shoppingCart.save();

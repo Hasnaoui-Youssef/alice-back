@@ -13,7 +13,7 @@ export class CreateShoppingCartDTO{
   cartItems : CartItemDTO[];
 
   @IsEmpty()
-  totalPrice : number = 0;
+  totalPrice? : number = 0;
 }
 
 export class CartItemDTO {

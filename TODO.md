@@ -1,4 +1,3 @@
-Add shopping cart controller
 Add product controller
 Add category controller
 Finish User controller
