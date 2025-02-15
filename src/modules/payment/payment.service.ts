@@ -1,17 +1,16 @@
 import { HttpService } from "@nestjs/axios";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import { PAYMENT_OPTIONS } from "./constants/payment.const";
 import { PaymentPayload } from "./interfaces/payment-payload.interface";
 import { InitPaymentResponse } from "./interfaces/payment-init-response.interface";
 import { catchError, firstValueFrom } from "rxjs";
 import { AxiosError } from "axios";
 import { PaymentDetailsResponse } from "./interfaces/payment-details.interface";
-import { ConfigService } from "@nestjs/config";
 import { PaymentOptions } from "./interfaces/payment-options.interface";
 
 @Injectable()
 export class PaymentService{
-
+  private logger = new Logger(PaymentService.name);
   constructor(
     private readonly httpService : HttpService,
     @Inject(PAYMENT_OPTIONS) private readonly paymentOptions : PaymentOptions,
@@ -24,7 +23,7 @@ export class PaymentService{
     payload = {...payload, ...paymentData}
     const { data } = await firstValueFrom(this.httpService.post<InitPaymentResponse>(konnectUrl+ "init-payment", payload).pipe(
       catchError((error : AxiosError) => {
-        console.log(error)
+        this.logger.error(JSON.stringify(error.response.data))
         throw "unable to initialize payment"
       })
     ));
@@ -35,6 +34,7 @@ export class PaymentService{
   public async getPaymentDetails(paymentRef : string) : Promise<PaymentDetailsResponse> {
     const { data } = await firstValueFrom(this.httpService.get<PaymentDetailsResponse>(paymentRef).pipe(
       catchError((error : AxiosError) => {
+        this.logger.error(JSON.stringify(error.response.data))
         throw "failed to get payment details";
       })
     ));

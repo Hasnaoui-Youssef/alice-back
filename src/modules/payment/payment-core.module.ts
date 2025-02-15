@@ -13,7 +13,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     imports : [ConfigModule],
     useFactory : async (configService : ConfigService) => ({
       headers : {
-        "x-api-key" : configService.get<string>('KONNECT_API_KEY'),
+        "x-api-key" : configService.get<string>('DEV_KONNECT_API_KEY'),
       }
     }),
     inject : [ConfigService]

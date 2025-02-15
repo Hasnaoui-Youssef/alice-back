@@ -6,6 +6,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { RequestUser } from 'src/common/types/requestUser.type';
 import { ConfigService } from '@nestjs/config';
+import { PaymentService } from '../payment/payment.service';
 
 @Public()
 @Controller('order')
@@ -13,7 +14,8 @@ export class OrderController {
   private frontUrl : string;
   constructor(
     private readonly orderService: OrderService,
-    private readonly configService : ConfigService
+    private readonly configService : ConfigService,
+    private readonly paymentService : PaymentService,
   ) {
     this.frontUrl = this.configService.get<string>("FRONTEND_SITE_URL");
   }
@@ -29,7 +31,7 @@ export class OrderController {
 
   @Get("payment-complete")
   async paymentComplete(@Query("payment_ref") paymentRef : string){
-    await this.orderService.handlePayment(paymentRef);
+    //await this.orderService.handlePayment(paymentRef);
     return "Payment Complete"
   }
 
@@ -41,5 +43,12 @@ export class OrderController {
   @Get("cancel-order")
   async cancelOrder(@Query("order-id") orderId : string, @CurrentUser() user : RequestUser){
     return await this.orderService.cancelOrder(orderId, user.userId);
+  }
+  @Get("test-payment")
+  async testPaymentKey(@Res() response : Response){
+    const payload = await this.paymentService.initiatePayment({
+      amount : 250,
+    })
+    response.status(301).redirect(payload.payUrl);
   }
 }

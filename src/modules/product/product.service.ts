@@ -25,12 +25,21 @@ export class ProductService {
       throw new BadRequestException("Unable to create new product : ", error.message);
     }
   }
-  async findProductById(id : string){
-    try{
-      return await this.productModel.findById(new Types.ObjectId(id)).exec();
-    }catch(error){
-      throw new NotFoundException("Product Not found")
-    }
+
+  async getCategoryProducts(categoryId : string){
+    return await this.productModel.find({category : new Types.ObjectId(categoryId)});
+  }
+
+  async getAllProducts(){
+    return await this.productModel.find().select("name description imageUrl category price").populate<{category : string}>("category");
+  }
+
+  async getActiveProducts(){
+    return await this.productModel.find({isActive : true}).select("name description imageUrl category price").populate<{category : string}>("category");
+  }
+
+  async getInactiveProducts(){
+    return await this.productModel.find({isActive : false}).select("name description imageUrl category price").populate<{category : string}>("category");
   }
 
   async findProductByName(name : string){
@@ -40,6 +49,15 @@ export class ProductService {
       throw new NotFoundException("Product Not found")
     }
   }
+
+  async findProductById(id : string){
+    try{
+      return await this.productModel.findById(new Types.ObjectId(id)).exec();
+    }catch(error){
+      throw new NotFoundException("Product Not found")
+    }
+  }
+
   async addProductQuantity(productId : string, quantity : number){
     try{
       if(quantity <= 0){

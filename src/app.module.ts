@@ -44,8 +44,8 @@ import { PaymentToken } from './modules/payment/interfaces/payment-options.inter
   PaymentModule.forRootAsync({
       imports : [ConfigModule],
       useFactory : async (configService : ConfigService) => ({
-        receiverWalletId : configService.get<string>("KONNECT_WALLET_KEY"),
-        apiKey : configService.get<string>("KONNECT_API_KEY"),
+        receiverWalletId : configService.get<string>("DEV_KONNECT_WALLET_KEY"),
+        apiKey : configService.get<string>("DEV_KONNECT_API_KEY"),
         options : {
           token : PaymentToken.TND,
           silentWebhook : true,
@@ -55,7 +55,7 @@ import { PaymentToken } from './modules/payment/interfaces/payment-options.inter
           failUrl : configService.get<string>("BACKEND_URL") + "/order/order-fail",
           theme : 'dark',
         },
-        konnectUrl : configService.get<string>("KONNECT_URL"),
+        konnectUrl : configService.get<string>("DEV_KONNECT_URL"),
       }),
       inject:[ConfigService],
   }),
