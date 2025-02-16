@@ -1,7 +1,13 @@
 import { ProductService } from './product.service';
+import { CreateProductDTO } from './dto/create-product.dto';
 export declare class ProductController {
     private readonly productService;
     constructor(productService: ProductService);
+    createProduct(createProductDTO: CreateProductDTO): Promise<import("mongoose").Document<unknown, {}, import("./schemas/product.schema").Product> & import("./schemas/product.schema").Product & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }> & {
+        __v: number;
+    }>;
     getAllProducts(): Promise<(import("mongoose").Document<unknown, {}, import("mongoose").MergeType<import("./schemas/product.schema").Product, {
         category: string;
     }>> & Omit<import("./schemas/product.schema").Product, "category"> & {
