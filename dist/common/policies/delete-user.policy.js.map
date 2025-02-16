@@ -1,0 +1,1 @@
+{"version":3,"file":"delete-user.policy.js","sourceRoot":"","sources":["../../../src/common/policies/delete-user.policy.ts"],"names":[],"mappings":";;;AAEA,wDAAgD;AAChD,iEAAqD;AAErD,MAAa,uBAAuB;IAChC,MAAM,CAAC,UAAuB;QAC1B,OAAO,UAAU,CAAC,GAAG,CAAC,sBAAO,CAAC,MAAM,EAAE,kBAAI,CAAC,CAAA;IAC/C,CAAC;CACJ;AAJD,0DAIC"}

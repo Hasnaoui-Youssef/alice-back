@@ -1,0 +1,1 @@
+{"version":3,"file":"update-user.policy.js","sourceRoot":"","sources":["../../../src/common/policies/update-user.policy.ts"],"names":[],"mappings":";;;AAEA,wDAAgD;AAGhD,MAAa,uBAAuB;IAChC,MAAM,CAAC,UAAuB,EAAE,IAAW;QACvC,OAAO,UAAU,CAAC,GAAG,CAAC,sBAAO,CAAC,MAAM,EAAE,IAAI,CAAC,CAAA;IAC/C,CAAC;CACJ;AAJD,0DAIC"}

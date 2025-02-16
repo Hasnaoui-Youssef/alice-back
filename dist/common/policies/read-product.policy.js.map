@@ -1,0 +1,1 @@
+{"version":3,"file":"read-product.policy.js","sourceRoot":"","sources":["../../../src/common/policies/read-product.policy.ts"],"names":[],"mappings":";;;AAEA,wDAAgD;AAChD,iFAAqE;AAErE,MAAa,wBAAwB;IACjC,MAAM,CAAC,UAAuB;QAC1B,OAAO,UAAU,CAAC,GAAG,CAAC,sBAAO,CAAC,IAAI,EAAE,wBAAO,CAAC,CAAA;IAChD,CAAC;CACJ;AAJD,4DAIC"}

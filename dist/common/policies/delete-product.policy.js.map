@@ -1,0 +1,1 @@
+{"version":3,"file":"delete-product.policy.js","sourceRoot":"","sources":["../../../src/common/policies/delete-product.policy.ts"],"names":[],"mappings":";;;AAEA,wDAAgD;AAChD,iFAAqE;AAErE,MAAa,0BAA0B;IACnC,MAAM,CAAC,UAAuB;QAC1B,OAAO,UAAU,CAAC,GAAG,CAAC,sBAAO,CAAC,MAAM,EAAE,wBAAO,CAAC,CAAA;IAClD,CAAC;CACJ;AAJD,gEAIC"}
