@@ -131,4 +131,7 @@ export class UsersService {
             throw new BadRequestException("Error Updating User")
         }
     }
+    async deleteUser(id : string){
+        return await this.userModel.findByIdAndDelete(new Types.ObjectId(id));
+    }
 }

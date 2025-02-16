@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { Category } from './category.schema';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class CategoryService {
   constructor(
-    private readonly categoryModel : Model<Category>,
+    @InjectModel(Category.name) private readonly categoryModel : Model<Category>,
   ){}
   async addCategory(name : string){
     const category = new this.categoryModel({name});
