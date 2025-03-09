@@ -5,13 +5,14 @@ import { CheckPolicy } from 'src/common/decorators/policy.decorator';
 import { ReadUserPolicyHandler } from 'src/common/policies/read-user.policy';
 import { UpdateUserDTO } from './dto/update-user.dto';
 import { Types } from 'mongoose';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
 
-  @CheckPolicy(new ReadUserPolicyHandler())
+  @Public()
   @Get()
   async getUsers(@Query() searchQuery : UserQueryDTO){
     return this.usersService.findAll(searchQuery);
