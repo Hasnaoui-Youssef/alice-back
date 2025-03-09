@@ -7,13 +7,12 @@ import { UpdateUserDTO } from './dto/update-user.dto';
 import { Types } from 'mongoose';
 import { Public } from 'src/common/decorators/public.decorator';
 
-
-@Public()
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
 
+  @Public()
   @Get()
   async getUsers(@Query() searchQuery : UserQueryDTO){
     return this.usersService.findAll(searchQuery);

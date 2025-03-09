@@ -20,6 +20,7 @@ const policy_decorator_1 = require("../../common/decorators/policy.decorator");
 const read_user_policy_1 = require("../../common/policies/read-user.policy");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const mongoose_1 = require("mongoose");
+const public_decorator_1 = require("../../common/decorators/public.decorator");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
@@ -39,7 +40,7 @@ let UsersController = class UsersController {
 };
 exports.UsersController = UsersController;
 __decorate([
-    (0, policy_decorator_1.CheckPolicy)(new read_user_policy_1.ReadUserPolicyHandler()),
+    (0, public_decorator_1.Public)(),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
