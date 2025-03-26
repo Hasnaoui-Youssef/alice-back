@@ -78,6 +78,7 @@ let OrderService = class OrderService {
             }
             order.status = order_status_enum_1.OrderStatus.InProcessing;
             await order.save();
+            user.orders.push(new mongoose_2.Types.ObjectId(order._id));
             await this.shoppingCartService.deleteShoppingCart(shoppingCart._id.toString());
             return this.configService.getOrThrow("FRONTEND_SITE_URL");
         }

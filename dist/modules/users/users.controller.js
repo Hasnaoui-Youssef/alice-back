@@ -15,18 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
-const user_query_dto_1 = require("./dto/user-query.dto");
 const policy_decorator_1 = require("../../common/decorators/policy.decorator");
 const read_user_policy_1 = require("../../common/policies/read-user.policy");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const mongoose_1 = require("mongoose");
-const public_decorator_1 = require("../../common/decorators/public.decorator");
+const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    async getUsers(searchQuery) {
-        return this.usersService.findAll(searchQuery);
+    async getUsers(user) {
+        return this.usersService.findOneById(user.userId);
     }
     async getUserById(id) {
         return this.usersService.findOneById(id);
@@ -40,11 +39,10 @@ let UsersController = class UsersController {
 };
 exports.UsersController = UsersController;
 __decorate([
-    (0, public_decorator_1.Public)(),
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Query)()),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_query_dto_1.UserQueryDTO]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUsers", null);
 __decorate([

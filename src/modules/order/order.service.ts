@@ -71,6 +71,7 @@ export class OrderService {
       }
       order.status = OrderStatus.InProcessing;
       await order.save();
+      user.orders.push(new Types.ObjectId(order._id));
       await this.shoppingCartService.deleteShoppingCart(shoppingCart._id.toString())
       return this.configService.getOrThrow<string>("FRONTEND_SITE_URL");
     }catch(error){
