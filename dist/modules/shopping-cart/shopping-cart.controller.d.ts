@@ -35,5 +35,5 @@ export declare class ShoppingCartController {
     }> & {
         __v: number;
     })[]>;
-    getShoppingCart(userId: string): Promise<import("./shopping-cart.schema").ShoppingCart>;
+    getShoppingCart(id: string): Promise<import("./shopping-cart.schema").ShoppingCart>;
 }

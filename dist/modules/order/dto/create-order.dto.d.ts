@@ -3,6 +3,7 @@ export declare class ShippingDetailsDto {
     address: string;
     zipCode: string;
     city: string;
+    phoneNumber: string;
 }
 export declare class CreateOrderDto {
     shippingDetails: ShippingDetailsDto;

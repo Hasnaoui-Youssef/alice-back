@@ -23,6 +23,7 @@ __decorate([
 ], ShippingDetailsDto.prototype, "address", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumberString)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], ShippingDetailsDto.prototype, "zipCode", void 0);
@@ -31,6 +32,12 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], ShippingDetailsDto.prototype, "city", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumberString)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], ShippingDetailsDto.prototype, "phoneNumber", void 0);
 class CreateOrderDto {
 }
 exports.CreateOrderDto = CreateOrderDto;

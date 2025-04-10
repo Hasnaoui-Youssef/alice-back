@@ -3,6 +3,7 @@ export type ProductDocument = HydratedDocument<Product>;
 export declare class Product {
     _id: Types.ObjectId;
     name: string;
+    price: number;
     quantity: number;
     description: string;
     imageUrl: string;

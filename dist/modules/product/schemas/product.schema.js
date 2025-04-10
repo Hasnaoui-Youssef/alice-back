@@ -26,6 +26,10 @@ __decorate([
 __decorate([
     (0, mongoose_1.Prop)({ required: true, default: 0 }),
     __metadata("design:type", Number)
+], Product.prototype, "price", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ required: true, default: 0 }),
+    __metadata("design:type", Number)
 ], Product.prototype, "quantity", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),

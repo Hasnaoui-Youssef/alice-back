@@ -42,8 +42,8 @@ let ShoppingCartController = class ShoppingCartController {
     getAllCarts() {
         return this.shoppingCartService.getAllCarts();
     }
-    getShoppingCart(userId) {
-        return this.shoppingCartService.getCartById(userId);
+    getShoppingCart(id) {
+        return this.shoppingCartService.getCartById(id);
     }
 };
 exports.ShoppingCartController = ShoppingCartController;

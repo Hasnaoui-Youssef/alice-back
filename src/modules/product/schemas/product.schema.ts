@@ -13,6 +13,9 @@ export class Product {
   name : string;
 
   @Prop({required : true, default : 0})
+  price : number;
+  
+  @Prop({required : true, default : 0})
   quantity : number;
 
   @Prop({required : true})

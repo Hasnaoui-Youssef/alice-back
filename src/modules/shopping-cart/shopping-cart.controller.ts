@@ -38,8 +38,8 @@ export class ShoppingCartController {
   }
 
   @Get(":id")
-  getShoppingCart(@Param("id") userId : string){
-    return this.shoppingCartService.getCartById(userId);
+  getShoppingCart(@Param("id") id : string){
+    return this.shoppingCartService.getCartById(id);
   }
 
 }

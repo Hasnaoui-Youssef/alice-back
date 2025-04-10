@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 export declare class CreateProductDTO {
     name: string;
+    price: number;
     quantity: number;
     description: string;
     imageUrl: string;

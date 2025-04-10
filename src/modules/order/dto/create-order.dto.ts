@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumberString, IsString } from "class-validator";
 import { PaymentMethod } from "src/common/enums/payment-methods.enum";
 
 export class ShippingDetailsDto {
@@ -8,12 +8,18 @@ export class ShippingDetailsDto {
   address : string;
 
   @IsNotEmpty()
+  @IsNumberString()
   @IsString()
   zipCode : string;
 
   @IsNotEmpty()
   @IsString()
   city : string;
+
+  @IsNotEmpty()
+  @IsNumberString()
+  @IsString()
+  phoneNumber : string;
 }
 
 export class CreateOrderDto {

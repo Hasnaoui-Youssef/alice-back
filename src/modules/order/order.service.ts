@@ -62,7 +62,7 @@ export class OrderService {
           lastName : user.lastName,
           email : user.email,
           orderId : order._id.toString(),
-          description : `Achat des produits : ${processedProducts.map((product) => product.name).join("-")}`
+          description : `Achat des produits : ${processedProducts.map((product) => product.name).join("/")}`
         });
         order.onlinePaymentRef = payResponse.paymentRef;
         //TODO send order details via email
