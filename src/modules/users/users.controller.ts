@@ -13,9 +13,14 @@ export class UsersController {
 
 
   @Get()
-  async getUsers(@CurrentUser() user : RequestUser){
+  async getCurrentUser(@CurrentUser() user : RequestUser){
     return this.usersService.findOneById(user.userId);
   }
+  @Get("all")
+  async getUsers(){
+    return this.usersService.findAllUsers();
+  }
+  
   @CheckPolicy(new ReadUserPolicyHandler())
   @Get(":id")
   async getUserById(@Param("id") id : string){

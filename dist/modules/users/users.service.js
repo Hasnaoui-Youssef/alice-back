@@ -68,6 +68,9 @@ let UsersService = class UsersService {
         const newUser = new this.userModel(createUserDTO);
         return await newUser.save();
     }
+    async findAllUsers() {
+        return this.userModel.find();
+    }
     async findAll(query) {
         const options = { $and: [] };
         if (query.name) {

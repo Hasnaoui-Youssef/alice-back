@@ -28,6 +28,10 @@ export class UsersService {
         return await newUser.save();
     }
 
+    async findAllUsers(){
+        return this.userModel.find();
+    }
+
 
     async findAll(query : UserQueryDTO) : Promise<PaginatedUsers> {
         const options : RootFilterQuery<User> = { $and : [] };

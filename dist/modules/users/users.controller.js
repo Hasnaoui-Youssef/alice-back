@@ -24,8 +24,11 @@ let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    async getUsers(user) {
+    async getCurrentUser(user) {
         return this.usersService.findOneById(user.userId);
+    }
+    async getUsers() {
+        return this.usersService.findAllUsers();
     }
     async getUserById(id) {
         return this.usersService.findOneById(id);
@@ -43,6 +46,12 @@ __decorate([
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getCurrentUser", null);
+__decorate([
+    (0, common_1.Get)("all"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUsers", null);
 __decorate([

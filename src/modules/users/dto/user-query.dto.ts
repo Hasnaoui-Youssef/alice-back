@@ -4,13 +4,13 @@ import { SearchQueryDTO } from "src/common/dto/search-query.dto";
 export class UserQueryDTO extends SearchQueryDTO {
     @IsOptional()
     @IsString()
-    email : string;
+    email? : string;
 
     @IsOptional()
     @IsString()
-    phoneNumber : string;
+    phoneNumber? : string;
 
     @IsOptional()
     @IsString()
-    sortBy : "name" | "birthDate" | "createdAt";
+    sortBy? : "name" | "birthDate" | "createdAt";
 }

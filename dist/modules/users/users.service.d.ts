@@ -7,6 +7,11 @@ export declare class UsersService {
     private readonly userModel;
     constructor(userModel: Model<User>);
     createUser(createUserDTO: CreateUserDTO): Promise<User>;
+    findAllUsers(): Promise<(import("mongoose").Document<unknown, {}, User> & User & Required<{
+        _id: Types.ObjectId;
+    }> & {
+        __v: number;
+    })[]>;
     findAll(query: UserQueryDTO): Promise<PaginatedUsers>;
     findOneByEmail(email: string): Promise<User>;
     findOneById(id: string): Promise<User>;
