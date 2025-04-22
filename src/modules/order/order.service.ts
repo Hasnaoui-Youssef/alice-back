@@ -140,7 +140,11 @@ export class OrderService {
       throw new NotFoundException("Unable to find order");
     }
   }
-  async findUserOrders(userId : string) {
+  async findUserOrders(userId : string) : Promise<Order[]> {
     return await this.orderModel.find({clientId : new Types.ObjectId(userId)}).exec();
+  }
+  
+  async findAll() : Promise<Order[]> {
+    return await this.orderModel.find();
   }
 }

@@ -1,14 +1,12 @@
-import { Body, Controller, Get, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { Response } from 'express';
-import { Public } from 'src/common/decorators/public.decorator';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { RequestUser } from 'src/common/types/requestUser.type';
 import { ConfigService } from '@nestjs/config';
 import { PaymentService } from '../payment/payment.service';
 
-@Public()
 @Controller('order')
 export class OrderController {
   private frontUrl : string;
@@ -18,6 +16,14 @@ export class OrderController {
     private readonly paymentService : PaymentService,
   ) {
     this.frontUrl = this.configService.get<string>("FRONTEND_SITE_URL");
+  }
+  @Get()
+  async getOrders(){
+    return this.orderService.findAll();
+  }
+  @Get("own")
+  async getUserOrders(@CurrentUser() user : RequestUser){
+    return this.orderService.findUserOrders(user.userId);
   }
   @Get("init-payment")
   async initPayment(@Res() response : Response, @Body() createOrderDto : CreateOrderDto, @CurrentUser() user : RequestUser){
@@ -50,5 +56,9 @@ export class OrderController {
       amount : 250,
     })
     response.status(301).redirect(payload.payUrl);
+  }
+  @Get(":id")
+  async getOrderById(@Param("id") id : string){
+    return this.orderService.findOrderById(id);
   }
 }

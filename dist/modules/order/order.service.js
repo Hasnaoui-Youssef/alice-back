@@ -156,6 +156,9 @@ let OrderService = class OrderService {
     async findUserOrders(userId) {
         return await this.orderModel.find({ clientId: new mongoose_2.Types.ObjectId(userId) }).exec();
     }
+    async findAll() {
+        return await this.orderModel.find();
+    }
 };
 exports.OrderService = OrderService;
 exports.OrderService = OrderService = __decorate([

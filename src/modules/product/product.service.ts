@@ -31,15 +31,15 @@ export class ProductService {
   }
 
   async getAllProducts(){
-    return await this.productModel.find().select("name description imageUrl category price").populate<{category : string}>("category");
+    return await this.productModel.find().populate<{category : string}>("category");
   }
 
   async getActiveProducts(){
-    return await this.productModel.find({isActive : true}).select("name description imageUrl category price").populate<{category : string}>("category");
+    return await this.productModel.find({isActive : true}).populate<{category : string}>("category");
   }
 
   async getInactiveProducts(){
-    return await this.productModel.find({isActive : false}).select("name description imageUrl category price").populate<{category : string}>("category");
+    return await this.productModel.find({isActive : false}).populate<{category : string}>("category");
   }
 
   async findProductByName(name : string){

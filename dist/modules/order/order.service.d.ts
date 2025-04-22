@@ -1,6 +1,6 @@
 import { PaymentService } from '../payment/payment.service';
 import { Order } from './order.schema';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { ProductService } from '../product/product.service';
@@ -22,9 +22,6 @@ export declare class OrderService {
     cancelOrder(orderId: string, userId: string): Promise<Order>;
     handlePayment(paymentRef: string): Promise<void>;
     findOrderById(orderId: string): Promise<Order>;
-    findUserOrders(userId: string): Promise<(import("mongoose").Document<unknown, {}, Order> & Order & {
-        _id: Types.ObjectId;
-    } & {
-        __v: number;
-    })[]>;
+    findUserOrders(userId: string): Promise<Order[]>;
+    findAll(): Promise<Order[]>;
 }

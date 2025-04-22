@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderController = void 0;
 const common_1 = require("@nestjs/common");
 const order_service_1 = require("./order.service");
-const public_decorator_1 = require("../../common/decorators/public.decorator");
 const create_order_dto_1 = require("./dto/create-order.dto");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
 const config_1 = require("@nestjs/config");
@@ -26,6 +25,12 @@ let OrderController = class OrderController {
         this.configService = configService;
         this.paymentService = paymentService;
         this.frontUrl = this.configService.get("FRONTEND_SITE_URL");
+    }
+    async getOrders() {
+        return this.orderService.findAll();
+    }
+    async getUserOrders(user) {
+        return this.orderService.findUserOrders(user.userId);
     }
     async initPayment(response, createOrderDto, user) {
         const url = await this.orderService.createOrder(createOrderDto, user.userId);
@@ -49,8 +54,24 @@ let OrderController = class OrderController {
         });
         response.status(301).redirect(payload.payUrl);
     }
+    async getOrderById(id) {
+        return this.orderService.findOrderById(id);
+    }
 };
 exports.OrderController = OrderController;
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "getOrders", null);
+__decorate([
+    (0, common_1.Get)("own"),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "getUserOrders", null);
 __decorate([
     (0, common_1.Get)("init-payment"),
     __param(0, (0, common_1.Res)()),
@@ -96,8 +117,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "testPaymentKey", null);
+__decorate([
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "getOrderById", null);
 exports.OrderController = OrderController = __decorate([
-    (0, public_decorator_1.Public)(),
     (0, common_1.Controller)('order'),
     __metadata("design:paramtypes", [order_service_1.OrderService,
         config_1.ConfigService,

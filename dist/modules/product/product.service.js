@@ -39,13 +39,13 @@ let ProductService = class ProductService {
         return await this.productModel.find({ category: new mongoose_2.Types.ObjectId(categoryId) });
     }
     async getAllProducts() {
-        return await this.productModel.find().select("name description imageUrl category price").populate("category");
+        return await this.productModel.find().populate("category");
     }
     async getActiveProducts() {
-        return await this.productModel.find({ isActive: true }).select("name description imageUrl category price").populate("category");
+        return await this.productModel.find({ isActive: true }).populate("category");
     }
     async getInactiveProducts() {
-        return await this.productModel.find({ isActive: false }).select("name description imageUrl category price").populate("category");
+        return await this.productModel.find({ isActive: false }).populate("category");
     }
     async findProductByName(name) {
         try {
