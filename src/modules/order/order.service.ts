@@ -34,9 +34,9 @@ export class OrderService {
       const user = await this.userService.findOneById(userId);
       const shoppingCart = await this.shoppingCartService.getUserCart(userId);
       const order = new this.orderModel({
-        userId,
         ...createOrderDto,
-        ...shoppingCart
+        ...shoppingCart,
+        clientId : userId,
       });
       const productLock = await Promise.allSettled(order.cartItems.map(async (item) => {
         const product = await this.productService.retrieveQuantity(item.productId.toString(), item.quantity);
