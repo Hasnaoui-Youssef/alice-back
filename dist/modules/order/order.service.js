@@ -23,17 +23,15 @@ const shopping_cart_service_1 = require("../shopping-cart/shopping-cart.service"
 const payment_methods_enum_1 = require("../../common/enums/payment-methods.enum");
 const product_service_1 = require("../product/product.service");
 const users_service_1 = require("../users/users.service");
-const mailer_1 = require("../mailer");
 const config_1 = require("@nestjs/config");
 const order_status_enum_1 = require("../../common/enums/order-status.enum");
 let OrderService = OrderService_1 = class OrderService {
-    constructor(orderModel, paymentService, shoppingCartService, productService, userService, mailerService, configService) {
+    constructor(orderModel, paymentService, shoppingCartService, productService, userService, configService) {
         this.orderModel = orderModel;
         this.paymentService = paymentService;
         this.shoppingCartService = shoppingCartService;
         this.productService = productService;
         this.userService = userService;
-        this.mailerService = mailerService;
         this.configService = configService;
         this.logger = new common_1.Logger(OrderService_1.name);
     }
@@ -43,6 +41,7 @@ let OrderService = OrderService_1 = class OrderService {
             const user = await this.userService.findOneById(userId);
             const shoppingCart = await this.shoppingCartService.getUserCart(userId);
             const order = new this.orderModel({
+                userId,
                 ...createOrderDto,
                 ...shoppingCart
             });
@@ -172,7 +171,6 @@ exports.OrderService = OrderService = OrderService_1 = __decorate([
         shopping_cart_service_1.ShoppingCartService,
         product_service_1.ProductService,
         users_service_1.UsersService,
-        mailer_1.MailerService,
         config_1.ConfigService])
 ], OrderService);
 //# sourceMappingURL=order.service.js.map

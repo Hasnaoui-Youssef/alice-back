@@ -8,7 +8,7 @@ import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { PaymentMethod } from 'src/common/enums/payment-methods.enum';
 import { ProductService } from '../product/product.service';
 import { UsersService } from '../users/users.service';
-import { MailerService } from '../mailer';
+//import { MailerService } from '../mailer';
 import { ConfigService } from '@nestjs/config';
 import { OrderStatus } from 'src/common/enums/order-status.enum';
 
@@ -21,7 +21,7 @@ export class OrderService {
     private readonly shoppingCartService : ShoppingCartService,
     private readonly productService : ProductService,
     private readonly userService : UsersService,
-    private readonly mailerService : MailerService,
+    //private readonly mailerService : MailerService,
     private readonly configService : ConfigService
   ){}
   async createOrder(createOrderDto : CreateOrderDto, userId : string) : Promise<string> {
@@ -34,6 +34,7 @@ export class OrderService {
       const user = await this.userService.findOneById(userId);
       const shoppingCart = await this.shoppingCartService.getUserCart(userId);
       const order = new this.orderModel({
+        userId,
         ...createOrderDto,
         ...shoppingCart
       });
