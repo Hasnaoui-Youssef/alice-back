@@ -30,6 +30,11 @@ export class OrderController {
     const url = await this.orderService.createOrder(createOrderDto, user.userId);
     response.status(201).redirect(url)
   }
+  @Get("test-init-payment")
+  async testInitPayment(@Res() response : Response, @Body() createOrderDto : CreateOrderDto, @CurrentUser() user : RequestUser){
+    const url = await this.orderService.testCreateOrder(createOrderDto, user.userId);
+    response.status(201).redirect(url)
+  }
   @Get("order-success")
   async orderSuccess(@Res() response : Response){
     response.status(301).redirect(`${this.frontUrl}/order-success`)

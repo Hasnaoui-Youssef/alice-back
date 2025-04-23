@@ -91,6 +91,37 @@ let OrderService = OrderService_1 = class OrderService {
             return this.configService.get("FRONTEND_SITE_URL") + "/failed-order";
         }
     }
+    async testCreateOrder(createOrderDto, userId) {
+        try {
+            const user = await this.userService.findOneById(userId);
+            const shoppingCart = await this.shoppingCartService.getUserCart(userId);
+            const order = new this.orderModel({
+                ...createOrderDto,
+                ...shoppingCart,
+                clientId: userId,
+            });
+            if (order.paymentMethod === payment_methods_enum_1.PaymentMethod.Online) {
+                const payResponse = await this.paymentService.initiatePayment({
+                    amount: order.totalPrice * 1000,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    orderId: order._id.toString(),
+                    description: `Achat des produits : ${shoppingCart.cartItems.map((product) => product.name).join("/")}`
+                });
+                order.onlinePaymentRef = payResponse.paymentRef;
+                return payResponse.payUrl;
+            }
+            order.status = order_status_enum_1.OrderStatus.InProcessing;
+            await order.save();
+            user.orders.push(new mongoose_2.Types.ObjectId(order._id));
+            return this.configService.getOrThrow("FRONTEND_SITE_URL");
+        }
+        catch (error) {
+            this.logger.error(error);
+            return this.configService.get("FRONTEND_SITE_URL") + "/failed-order";
+        }
+    }
     async confirmOrderOnlinePayment(paymentRef) {
         try {
             const order = await this.orderModel.findOne({ onlinePaymentRef: paymentRef }).exec();

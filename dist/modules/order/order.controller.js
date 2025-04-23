@@ -36,6 +36,10 @@ let OrderController = class OrderController {
         const url = await this.orderService.createOrder(createOrderDto, user.userId);
         response.status(201).redirect(url);
     }
+    async testInitPayment(response, createOrderDto, user) {
+        const url = await this.orderService.testCreateOrder(createOrderDto, user.userId);
+        response.status(201).redirect(url);
+    }
     async orderSuccess(response) {
         response.status(301).redirect(`${this.frontUrl}/order-success`);
     }
@@ -81,6 +85,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, create_order_dto_1.CreateOrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "initPayment", null);
+__decorate([
+    (0, common_1.Get)("test-init-payment"),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, create_order_dto_1.CreateOrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "testInitPayment", null);
 __decorate([
     (0, common_1.Get)("order-success"),
     __param(0, (0, common_1.Res)()),

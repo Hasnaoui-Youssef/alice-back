@@ -16,6 +16,7 @@ export declare class OrderService {
     private logger;
     constructor(orderModel: Model<Order>, paymentService: PaymentService, shoppingCartService: ShoppingCartService, productService: ProductService, userService: UsersService, configService: ConfigService);
     createOrder(createOrderDto: CreateOrderDto, userId: string): Promise<string>;
+    testCreateOrder(createOrderDto: CreateOrderDto, userId: string): Promise<string>;
     confirmOrderOnlinePayment(paymentRef: string): Promise<Order>;
     failOrderOnlinePayment(paymentRef: string): Promise<Order>;
     cancelOrder(orderId: string, userId: string): Promise<Order>;

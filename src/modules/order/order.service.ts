@@ -84,6 +84,37 @@ export class OrderService {
         return this.configService.get<string>("FRONTEND_SITE_URL") + "/failed-order"
     }
   }
+  async testCreateOrder(createOrderDto : CreateOrderDto, userId : string) : Promise<string> {
+    try{
+      const user = await this.userService.findOneById(userId);
+      const shoppingCart = await this.shoppingCartService.getUserCart(userId);
+      const order = new this.orderModel({
+        ...createOrderDto,
+        ...shoppingCart,
+        clientId : userId,
+      });
+      if(order.paymentMethod === PaymentMethod.Online){
+        const payResponse = await this.paymentService.initiatePayment({
+          amount : order.totalPrice * 1000,
+          firstName : user.firstName,
+          lastName : user.lastName,
+          email : user.email,
+          orderId : order._id.toString(),
+          description : `Achat des produits : ${shoppingCart.cartItems.map((product) => product.name).join("/")}`
+        });
+        order.onlinePaymentRef = payResponse.paymentRef;
+        //TODO send order details via email
+        return payResponse.payUrl;
+      }
+      order.status = OrderStatus.InProcessing;
+      await order.save();
+      user.orders.push(new Types.ObjectId(order._id));
+      return this.configService.getOrThrow<string>("FRONTEND_SITE_URL");
+    }catch(error){
+        this.logger.error(error);
+        return this.configService.get<string>("FRONTEND_SITE_URL") + "/failed-order"
+    }
+  }
   async confirmOrderOnlinePayment(paymentRef : string) : Promise<Order> {
     try{
       const order = await this.orderModel.findOne({onlinePaymentRef : paymentRef}).exec();
