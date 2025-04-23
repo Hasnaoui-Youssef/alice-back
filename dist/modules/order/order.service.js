@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var OrderService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderService = void 0;
 const common_1 = require("@nestjs/common");
@@ -25,7 +26,7 @@ const users_service_1 = require("../users/users.service");
 const mailer_1 = require("../mailer");
 const config_1 = require("@nestjs/config");
 const order_status_enum_1 = require("../../common/enums/order-status.enum");
-let OrderService = class OrderService {
+let OrderService = OrderService_1 = class OrderService {
     constructor(orderModel, paymentService, shoppingCartService, productService, userService, mailerService, configService) {
         this.orderModel = orderModel;
         this.paymentService = paymentService;
@@ -34,6 +35,7 @@ let OrderService = class OrderService {
         this.userService = userService;
         this.mailerService = mailerService;
         this.configService = configService;
+        this.logger = new common_1.Logger(OrderService_1.name);
     }
     async createOrder(createOrderDto, userId) {
         let processedProducts;
@@ -83,6 +85,7 @@ let OrderService = class OrderService {
             return this.configService.getOrThrow("FRONTEND_SITE_URL");
         }
         catch (error) {
+            this.logger.error(error);
             await Promise.all(processedProducts.map((product) => {
                 this.productService.addProductQuantity(product.id, product.usedQuantity);
             }));
@@ -161,7 +164,7 @@ let OrderService = class OrderService {
     }
 };
 exports.OrderService = OrderService;
-exports.OrderService = OrderService = __decorate([
+exports.OrderService = OrderService = OrderService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(order_schema_1.Order.name)),
     __metadata("design:paramtypes", [mongoose_2.Model,

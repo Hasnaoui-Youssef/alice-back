@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PaymentService } from '../payment/payment.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Order } from './order.schema';
@@ -14,6 +14,7 @@ import { OrderStatus } from 'src/common/enums/order-status.enum';
 
 @Injectable()
 export class OrderService {
+  private logger = new Logger(OrderService.name);
   constructor(
     @InjectModel(Order.name) private readonly orderModel : Model<Order>,
     private readonly paymentService : PaymentService,
@@ -75,6 +76,7 @@ export class OrderService {
       await this.shoppingCartService.deleteShoppingCart(shoppingCart._id.toString())
       return this.configService.getOrThrow<string>("FRONTEND_SITE_URL");
     }catch(error){
+        this.logger.error(error);
         await Promise.all(processedProducts.map((product) => {
           this.productService.addProductQuantity(product.id, product.usedQuantity);
         }));
@@ -143,7 +145,7 @@ export class OrderService {
   async findUserOrders(userId : string) : Promise<Order[]> {
     return await this.orderModel.find({clientId : new Types.ObjectId(userId)}).exec();
   }
-  
+
   async findAll() : Promise<Order[]> {
     return await this.orderModel.find();
   }

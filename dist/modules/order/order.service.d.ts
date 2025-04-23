@@ -15,6 +15,7 @@ export declare class OrderService {
     private readonly userService;
     private readonly mailerService;
     private readonly configService;
+    private logger;
     constructor(orderModel: Model<Order>, paymentService: PaymentService, shoppingCartService: ShoppingCartService, productService: ProductService, userService: UsersService, mailerService: MailerService, configService: ConfigService);
     createOrder(createOrderDto: CreateOrderDto, userId: string): Promise<string>;
     confirmOrderOnlinePayment(paymentRef: string): Promise<Order>;
