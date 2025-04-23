@@ -69,7 +69,7 @@ let ShoppingCartService = class ShoppingCartService {
                 return newShoppingCart;
             }
             cartItemDto.productId = new mongoose_2.Types.ObjectId(cartItemDto.productId);
-            const item = shoppingCart.cartItems.find((item) => item.productId === cartItemDto.productId);
+            const item = shoppingCart.cartItems.find((item) => item.productId.equals(cartItemDto.productId));
             if (item) {
                 item.quantity += cartItemDto.quantity;
                 shoppingCart.totalPrice += item.quantity * item.price;
@@ -95,7 +95,7 @@ let ShoppingCartService = class ShoppingCartService {
     async deleteCartItem(userId, itemProductId) {
         try {
             const shoppingCart = await this.shoppingCartModel.findOne({ clientId: new mongoose_2.Types.ObjectId(userId) });
-            shoppingCart.cartItems = shoppingCart.cartItems.filter((item) => item.productId !== new mongoose_2.Types.ObjectId(itemProductId));
+            shoppingCart.cartItems = shoppingCart.cartItems.filter((item) => item.productId.toString() !== itemProductId);
             shoppingCart.totalPrice = shoppingCart.cartItems.reduce((acc, item) => acc + (item.quantity * item.price), 0);
             return await shoppingCart.save();
         }
@@ -106,7 +106,7 @@ let ShoppingCartService = class ShoppingCartService {
     async addProductQuantity(userId, itemProductId, quantity) {
         try {
             const shoppingCart = await this.shoppingCartModel.findOne({ clientId: new mongoose_2.Types.ObjectId(userId) });
-            const item = shoppingCart.cartItems.find((item) => item.productId === new mongoose_2.Types.ObjectId(itemProductId));
+            const item = shoppingCart.cartItems.find((item) => item.productId.toString() === itemProductId);
             item.quantity += quantity;
             shoppingCart.totalPrice += item.price * quantity;
             return await shoppingCart.save();
@@ -118,7 +118,7 @@ let ShoppingCartService = class ShoppingCartService {
     async reduceProductQuantity(userId, itemProductId, quantity) {
         try {
             const shoppingCart = await this.shoppingCartModel.findOne({ clientId: new mongoose_2.Types.ObjectId(userId) });
-            const item = shoppingCart.cartItems.find((item) => item.productId === new mongoose_2.Types.ObjectId(itemProductId));
+            const item = shoppingCart.cartItems.find((item) => item.productId.toString() === itemProductId);
             if (item.quantity <= quantity) {
                 return await this.deleteCartItem(userId, itemProductId);
             }

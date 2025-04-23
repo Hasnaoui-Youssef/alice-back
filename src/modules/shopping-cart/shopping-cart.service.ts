@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShoppingCart } from './shopping-cart.schema';
 import { Model, Types } from 'mongoose';
@@ -9,7 +9,7 @@ export class ShoppingCartService {
   constructor(
     @InjectModel(ShoppingCart.name) private readonly shoppingCartModel : Model<ShoppingCart>,
   ){}
-  
+
   async createShoppingCart(shoppingCartDTO : CreateShoppingCartDTO, userId : string){
     shoppingCartDTO.totalPrice = shoppingCartDTO.cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     shoppingCartDTO.clientId = new Types.ObjectId(userId);
@@ -55,7 +55,7 @@ export class ShoppingCartService {
       return newShoppingCart;
      }
      cartItemDto.productId = new Types.ObjectId(cartItemDto.productId);
-     const item = shoppingCart.cartItems.find((item) => item.productId === cartItemDto.productId)
+     const item = shoppingCart.cartItems.find((item) => item.productId.equals(cartItemDto.productId))
      if(item){
       item.quantity += cartItemDto.quantity;
       shoppingCart.totalPrice += item.quantity * item.price;
@@ -80,7 +80,7 @@ export class ShoppingCartService {
   async deleteCartItem(userId : string, itemProductId : string){
     try{
       const shoppingCart = await this.shoppingCartModel.findOne({ clientId : new Types.ObjectId(userId)});
-      shoppingCart.cartItems = shoppingCart.cartItems.filter((item)=> item.productId !== new Types.ObjectId(itemProductId));
+      shoppingCart.cartItems = shoppingCart.cartItems.filter((item)=> item.productId.toString() !== itemProductId);
       shoppingCart.totalPrice = shoppingCart.cartItems.reduce((acc, item)=> acc + (item.quantity * item.price), 0);
       return await shoppingCart.save();
     }catch(error){
@@ -90,9 +90,9 @@ export class ShoppingCartService {
   async addProductQuantity(userId : string, itemProductId : string, quantity : number){
     try{
       const shoppingCart = await this.shoppingCartModel.findOne({ clientId : new Types.ObjectId(userId)});
-      const item = shoppingCart.cartItems.find((item) => item.productId === new Types.ObjectId(itemProductId));
+      const item = shoppingCart.cartItems.find((item) => item.productId.toString() === itemProductId);
       item.quantity += quantity;
-      shoppingCart.totalPrice += item.price * quantity; 
+      shoppingCart.totalPrice += item.price * quantity;
       return await shoppingCart.save();
     }catch(error){
       throw new BadRequestException("Unable to add quantity to item ", error.message);
@@ -101,12 +101,12 @@ export class ShoppingCartService {
   async reduceProductQuantity(userId : string, itemProductId : string, quantity : number){
     try{
       const shoppingCart = await this.shoppingCartModel.findOne({ clientId : new Types.ObjectId(userId)});
-      const item = shoppingCart.cartItems.find((item) => item.productId === new Types.ObjectId(itemProductId));
+      const item = shoppingCart.cartItems.find((item) => item.productId.toString() === itemProductId);
       if(item.quantity <= quantity){
         return await this.deleteCartItem(userId, itemProductId);
       }
       item.quantity -= quantity;
-      shoppingCart.totalPrice -= item.price * quantity; 
+      shoppingCart.totalPrice -= item.price * quantity;
       return await shoppingCart.save();
     }catch(error){
       throw new BadRequestException("Unable to add quantity to item ", error.message);
