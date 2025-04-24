@@ -23,6 +23,9 @@ let CategoryController = class CategoryController {
         this.categoryService = categoryService;
         this.productService = productService;
     }
+    getOneCategory(id) {
+        return this.categoryService.getOne(id);
+    }
     getCategories() {
         return this.categoryService.getAll();
     }
@@ -40,6 +43,13 @@ let CategoryController = class CategoryController {
     }
 };
 exports.CategoryController = CategoryController;
+__decorate([
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], CategoryController.prototype, "getOneCategory", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
@@ -77,7 +87,7 @@ __decorate([
 ], CategoryController.prototype, "deleteCategory", null);
 exports.CategoryController = CategoryController = __decorate([
     (0, public_decorator_1.Public)(),
-    (0, common_1.Controller)('category'),
+    (0, common_1.Controller)("category"),
     __metadata("design:paramtypes", [category_service_1.CategoryService,
         product_service_1.ProductService])
 ], CategoryController);

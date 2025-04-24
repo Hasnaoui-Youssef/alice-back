@@ -5,18 +5,18 @@ export class CreateClientReviewDTO {
   @IsNotEmpty()
   @IsMongoId()
   @IsString()
-  clientId : string | Types.ObjectId;
+  clientId: string | Types.ObjectId;
 
   @IsNotEmpty()
   @IsMongoId()
   @IsString()
-  productId : string | Types.ObjectId;
+  productId: string | Types.ObjectId;
 
   @IsNotEmpty()
   @IsNumber()
-  rating : number;
+  rating: number;
 
   @IsNotEmpty()
   @IsString()
-  comment : string;
+  comment: string;
 }

@@ -15,8 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
-const policy_decorator_1 = require("../../common/decorators/policy.decorator");
-const read_user_policy_1 = require("../../common/policies/read-user.policy");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const mongoose_1 = require("mongoose");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
@@ -55,7 +53,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUsers", null);
 __decorate([
-    (0, policy_decorator_1.CheckPolicy)(new read_user_policy_1.ReadUserPolicyHandler()),
     (0, common_1.Get)(":id"),
     __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
@@ -78,7 +75,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deleteUser", null);
 exports.UsersController = UsersController = __decorate([
-    (0, common_1.Controller)('users'),
+    (0, common_1.Controller)("users"),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map
