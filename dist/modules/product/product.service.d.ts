@@ -1,10 +1,10 @@
-import { Product } from './schemas/product.schema';
-import { Model, Types } from 'mongoose';
-import { ClientReview } from './schemas/client-review.schema';
-import { CreateProductDTO } from './dto/create-product.dto';
-import { UpdateProductDTO } from './dto/update-product.dto';
-import { CreateClientReviewDTO } from './dto/create-client-review.dto';
-import { UpdateClientReviewDTO } from './dto/update-client-review.dto';
+import { Product } from "./schemas/product.schema";
+import { Model, Types } from "mongoose";
+import { ClientReview } from "./schemas/client-review.schema";
+import { CreateProductDTO } from "./dto/create-product.dto";
+import { UpdateProductDTO } from "./dto/update-product.dto";
+import { CreateClientReviewDTO } from "./dto/create-client-review.dto";
+import { UpdateClientReviewDTO } from "./dto/update-client-review.dto";
 export declare class ProductService {
     private readonly productModel;
     private readonly clientReviewModel;

@@ -30,9 +30,15 @@ let AuthController = class AuthController {
     async login(body, response, user) {
         const tokens = await this.authService.login(user);
         response.cookie("access_token", tokens.access_token, {
-            expires: tokens.accessTokenExpiration
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            expires: tokens.accessTokenExpiration,
         });
         response.cookie("refresh_token", tokens.refresh_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
             expires: tokens.refreshTokenExpiration,
         });
         response.send();
@@ -49,9 +55,15 @@ let AuthController = class AuthController {
         try {
             const tokens = await this.authService.login(user);
             response.cookie("access_token", tokens.access_token, {
-                expires: tokens.accessTokenExpiration
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
+                expires: tokens.accessTokenExpiration,
             });
             response.cookie("refresh_token", tokens.refresh_token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
                 expires: tokens.refreshTokenExpiration,
             });
             response.send();
@@ -65,9 +77,15 @@ let AuthController = class AuthController {
         try {
             const tokens = await this.authService.login(user);
             response.cookie("access_token", tokens.access_token, {
-                expires: tokens.accessTokenExpiration
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
+                expires: tokens.accessTokenExpiration,
             });
             response.cookie("refresh_token", tokens.refresh_token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
                 expires: tokens.refreshTokenExpiration,
             });
             response.send();
@@ -79,9 +97,15 @@ let AuthController = class AuthController {
     async changePassword(response, body, user) {
         const tokens = await this.authService.login(user);
         response.cookie("access_token", tokens.access_token, {
-            expires: tokens.accessTokenExpiration
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            expires: tokens.accessTokenExpiration,
         });
         response.cookie("refresh_token", tokens.refresh_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
             expires: tokens.refreshTokenExpiration,
         });
         response.send();
@@ -89,9 +113,15 @@ let AuthController = class AuthController {
     async activateAccount(response, user) {
         const tokens = await this.authService.login(user);
         response.cookie("access_token", tokens.access_token, {
-            expires: tokens.accessTokenExpiration
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            expires: tokens.accessTokenExpiration,
         });
         response.cookie("refresh_token", tokens.refresh_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
             expires: tokens.refreshTokenExpiration,
         });
         response.send();
@@ -168,7 +198,7 @@ __decorate([
 ], AuthController.prototype, "activateAccount", null);
 exports.AuthController = AuthController = __decorate([
     (0, public_decorator_1.Public)(),
-    (0, common_1.Controller)('auth'),
+    (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

@@ -1,7 +1,7 @@
-import { AuthService } from './auth.service';
-import { Response } from 'express';
-import { RequestUser } from 'src/common/types/requestUser.type';
-import { CreateUserDTO } from '../users/dto/create-user.dto';
+import { AuthService } from "./auth.service";
+import { Response } from "express";
+import { RequestUser } from "src/common/types/requestUser.type";
+import { CreateUserDTO } from "../users/dto/create-user.dto";
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);

@@ -1,7 +1,7 @@
-import { UsersService } from './users.service';
-import { UpdateUserDTO } from './dto/update-user.dto';
-import { Types } from 'mongoose';
-import { RequestUser } from 'src/common/types/requestUser.type';
+import { UsersService } from "./users.service";
+import { UpdateUserDTO } from "./dto/update-user.dto";
+import { Types } from "mongoose";
+import { RequestUser } from "src/common/types/requestUser.type";
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);

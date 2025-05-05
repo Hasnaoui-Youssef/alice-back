@@ -36,16 +36,24 @@ let ProductService = class ProductService {
         }
     }
     async getCategoryProducts(categoryId) {
-        return await this.productModel.find({ category: new mongoose_2.Types.ObjectId(categoryId) });
+        return await this.productModel.find({
+            category: new mongoose_2.Types.ObjectId(categoryId),
+        });
     }
     async getAllProducts() {
-        return await this.productModel.find().populate("category");
+        return await this.productModel
+            .find()
+            .populate("category");
     }
     async getActiveProducts() {
-        return await this.productModel.find({ isActive: true }).populate("category");
+        return await this.productModel
+            .find({ isActive: true })
+            .populate("category");
     }
     async getInactiveProducts() {
-        return await this.productModel.find({ isActive: false }).populate("category");
+        return await this.productModel
+            .find({ isActive: false })
+            .populate("category");
     }
     async findProductByName(name) {
         try {
@@ -92,7 +100,10 @@ let ProductService = class ProductService {
             if (product.quantity === 0) {
                 product.isActive = false;
             }
-            return await product.save({ validateBeforeSave: true, validateModifiedOnly: true });
+            return await product.save({
+                validateBeforeSave: true,
+                validateModifiedOnly: true,
+            });
         }
         catch (error) {
             throw new common_1.BadRequestException("Unable to retrieve quantity ", error.message);
@@ -114,7 +125,8 @@ let ProductService = class ProductService {
             createClientReviewDTO.clientId = new mongoose_2.Types.ObjectId(createClientReviewDTO.clientId);
             const product = await this.productModel.findById(createClientReviewDTO.productId);
             const totalRating = product.averageRating * product.reviewsNumber;
-            const newRating = (totalRating + createClientReviewDTO.rating) / (product.reviewsNumber + 1);
+            const newRating = (totalRating + createClientReviewDTO.rating) /
+                (product.reviewsNumber + 1);
             const clientReview = new this.clientReviewModel(createClientReviewDTO);
             const review = await clientReview.save();
             product.averageRating = newRating;
@@ -159,7 +171,9 @@ let ProductService = class ProductService {
     }
     async getProductReviews(productId) {
         try {
-            return await this.clientReviewModel.find({ productId: new mongoose_2.Types.ObjectId(productId) });
+            return await this.clientReviewModel.find({
+                productId: new mongoose_2.Types.ObjectId(productId),
+            });
         }
         catch (error) {
             throw new common_1.BadRequestException("Cannot find reviews for product ", error.message);
